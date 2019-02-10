@@ -38,7 +38,7 @@ if (!empty($_GET['published_id'])) {
 
 }
 
-$posts_query = $pdo->query('SELECT * from ' . $table_prefix . 'posts ORDER BY publish_date DESC');
+$posts_query = $pdo->query('SELECT * from ' . $table_prefix . 'posts ORDER BY last_edit_date DESC');
 $posts       = $posts_query->fetchAll();
 $forward     = null;
 foreach ($posts as $post) {
@@ -69,7 +69,9 @@ $page_title = 'Mon Blog - Espace Admin';
             <select name="forward" id="forward">
                 <option value="">Sélectionner</option>
                 <?php foreach ($posts as $post): ?>
-                    <option value="<?=$post->id ?>"><?=$post->title ?></option>
+                    <?php if($post->published == 1): ?>
+                        <option value="<?=$post->id ?>"><?=$post->title ?></option>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </select>
             <input type="submit" value="Confirmer">
@@ -105,3 +107,5 @@ $page_title = 'Mon Blog - Espace Admin';
         <?php endif; ?>
     </div>
 </div>
+
+<?php require 'footer.php' ?>
